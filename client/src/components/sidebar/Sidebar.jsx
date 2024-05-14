@@ -20,7 +20,7 @@ const Sidebar = () => {
 <div
     className="new-chat"
     onClick={async () => {
-        const response = await axios.get("http://localhost:3000/clear-chat");
+        const response = await axios.get("https://gemini-pro-clone.onrender.com/clear-chat");
         const data = response.data;
         alert(data.message);
 		window.location.reload();

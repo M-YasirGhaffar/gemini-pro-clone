@@ -30,7 +30,7 @@ const Main = () => {
     }
     setLoading(true);
     try {
-      const response = await axios.post("http://localhost:3000/chat", {
+      const response = await axios.post("https://gemini-pro-clone.onrender.com/chat", {
         data: text,
       });
       setResultData(response.data.response); // Set new results from the server
