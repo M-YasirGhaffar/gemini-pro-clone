@@ -20,16 +20,19 @@ const Main = () => {
   const handleCardClick = (promptText) => {
     setInput(promptText);
     sendRequest(promptText);
+	setInput("");
   };
 
   const sendRequest = async (text) => {
     if (!text.trim()) {
-		alert("Please enter a valid prompt!");
-		return;
-	}
+      alert("Please enter a valid prompt!");
+      return;
+    }
     setLoading(true);
     try {
-      const response = await axios.post("http://localhost:3000/", { data: text });
+      const response = await axios.post("http://localhost:3000/chat", {
+        data: text,
+      });
       setResultData(response.data.response); // Set new results from the server
       setShowInitialContent(false); // Hide initial content after the first interaction
     } catch (error) {
@@ -45,7 +48,7 @@ const Main = () => {
   };
 
   const handleKeyDown = (event) => {
-    if (event.key === 'Enter') {
+    if (event.key === "Enter") {
       handleSend();
     }
   };
@@ -53,19 +56,44 @@ const Main = () => {
   return (
     <div className="main">
       <div className="nav">
-        <p>Gemini</p>
+        <p>Gemini Pro</p>
         <img src={assets.user} alt="" />
       </div>
       <div className="main-container">
-        {showInitialContent && (
+        {!loading && showInitialContent && (
           <>
             <div className="greet">
-              <p><span>Hello, Dev </span></p>
+              <p>
+                <span>Hello, Dev </span>
+              </p>
               <p>How Can I Help You Today?</p>
             </div>
             <div className="cards">
-              <div className="card" onClick={() => handleCardClick("Suggest Some Place To Visit In Kerala")}>
+              <div
+                className="card"
+                onClick={() =>
+                  handleCardClick("Suggest Some Place To Visit In Kerala")
+                }
+              >
                 <p>Suggest Some Place To Visit In Kerala</p>
+                <img src={assets.compass_icon} alt="" />
+              </div>
+              <div
+                className="card"
+                onClick={() =>
+                  handleCardClick("Write JavaScript Code To Sort An Array")
+                }
+              >
+                <p>Write JavaScript Code To Sort An Array</p>
+                <img src={assets.compass_icon} alt="" />
+              </div>
+              <div
+                className="card"
+                onClick={() =>
+                  handleCardClick("Suggest New Hobbies For 16 Years Old")
+                }
+              >
+                <p>Suggest New Hobbies For 16 Years Old</p>
                 <img src={assets.compass_icon} alt="" />
               </div>
               {/* Other cards */}
@@ -73,26 +101,32 @@ const Main = () => {
           </>
         )}
         <div className="result">
-			<div className="result-data">
-			{resultData.map((item, index) => (
-            <div key={index} className={`response-entry ${item.role}`}>
-              <img src={item.role === "model" ? assets.gemini_icon : assets.user} alt="" />
-              {item.role === "model" ? (
+          <div className="result-data">
+            {resultData.map((item, index) => (
+              <div key={index} className={`response-entry ${item.role}`}>
+                <img
+                  src={item.role === "model" ? assets.gemini_icon : assets.user}
+                  alt=""
+                />
+                {item.role === "model" ? (
                   <p className="markdown-container">
-					<ReactMarkdown>{item.parts}</ReactMarkdown>
-				  </p>
+                    <ReactMarkdown>{item.parts}</ReactMarkdown>
+                  </p>
                 ) : (
                   <p>{item.parts}</p>
                 )}
-
-            </div>
-          ))}
-          <div ref={resultEndRef} />
-			</div>
+              </div>
+            ))}
+            <div ref={resultEndRef} />
+          </div>
           {loading && (
             <div className="response-entry">
-			  <img src={assets.gemini_icon} alt="" />
-              <p><ClipLoader size={20} color={"#123abc"} /></p>
+              <img src={assets.gemini_icon} alt="" />
+              <div className="loader">
+                <hr />
+                <hr />
+                <hr />
+              </div>
             </div>
           )}
         </div>
@@ -109,11 +143,19 @@ const Main = () => {
             <div>
               <img src={assets.gallery_icon} alt="" />
               <img src={assets.mic_icon} alt="" />
-              <img src={assets.send_icon} alt="" onClick={handleSend} disabled={loading} />
+              <img
+                src={assets.send_icon}
+                alt=""
+                onClick={handleSend}
+                disabled={loading}
+              />
             </div>
           </div>
           <div className="bottom-info">
-            <p>Gemini may display inaccurate info, including about people, so double-check its responses. Your privacy & Gemini Apps</p>
+            <p>
+              Gemini may display inaccurate info, including about people, so
+              double-check its responses. Your privacy & Gemini Apps
+            </p>
           </div>
         </div>
       </div>
