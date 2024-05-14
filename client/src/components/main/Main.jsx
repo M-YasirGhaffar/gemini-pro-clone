@@ -91,7 +91,8 @@ const Main = () => {
 			</div>
           {loading && (
             <div className="response-entry">
-              <ClipLoader size={20} color={"#123abc"} />
+			  <img src={assets.gemini_icon} alt="" />
+              <p><ClipLoader size={20} color={"#123abc"} /></p>
             </div>
           )}
         </div>
